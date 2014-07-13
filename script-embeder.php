@@ -29,10 +29,12 @@ function script_embeder_box_generator($post){
 		$keys = array_keys($script_embeder_values);
 		sort($keys);
 		$last_key = $keys[sizeOf($keys)-1];
-		//$script_embeder_values_length = sizeOf($script_embeder_values);
+		
+		wp_nonce_field('script_embeder_save', 'script_embeder_nonce');
+		
 		$content ='<script type="text/javascript">var script_embeder_add_count=' . ($last_key). ';</script>
 		<div><input type="button" name="script_embeder_ok" onClick="script_embeder_add_script()" value="Add"></div>';
-		//for ($i = 0; $i < $script_embeder_values_length; $i++){
+		
 		foreach($script_embeder_values as $i=>$elem){
 			
 			$content .= '<div id="script_embeder_' . $i . '" ><select name="script_embeder[' . $i . '][type]">
@@ -72,10 +74,11 @@ function script_embeder_box_generator($post){
 
 function script_embeder_save_data($post_id){
 	if (isset($_POST['script_embeder'])){
+	
+		if(wp_verify_nonce($_POST['script_embeder_nonce'], 'script_embeder_save')){
+			update_post_meta($post_id, 'script_embeder', $_POST['script_embeder']);
 		
-		
-		update_post_meta($post_id, 'script_embeder', $_POST['script_embeder']);
-		
+		}
 		
 	}
 	
@@ -109,6 +112,7 @@ function script_embeder_head(){
 			if($pm[$i]['position'] == 'head'){
 				if($pm[$i]['type'] == 'src'){
 						$scripts .= '<script src="' . $pm[$i]['js'] . '"></script>';
+						
 					} else{
 						$scripts .= '<script type="text/javascript">' . $pm[$i]['js'] . '</script>';
 					}
@@ -129,6 +133,7 @@ function script_embeder_footer(){
 			if($pm[$i]['position'] == 'footer'){
 				if($pm[$i]['type'] == 'src'){
 					$scripts .= '<script src="' . $pm[$i]['js'] . '"></script>';
+					
 				} else{
 					$scripts .= '<script type="text/javascript">' . $pm[$i]['js'] . '</script>';
 				}
