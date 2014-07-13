@@ -10,6 +10,7 @@ Select if the plugin is added to the HEAD or the FOOTER (using wp_head and wp_fo
 Select the order.
 
 TODO (Next versions):
+Add the scripts/styles using wordpress functions for that.
 Better support for CSS. (it works now)
 Allow uploading the file from the Post Editor. (low priority)
 

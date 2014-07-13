@@ -73,16 +73,7 @@ function script_embeder_box_generator($post){
 function script_embeder_save_data($post_id){
 	if (isset($_POST['script_embeder'])){
 		
-		/*$new_keys = array_keys($_POST['script_embeder']);
-		$saved_keys = array_keys(get_post_meta($post_id, 'script_embeder')[0]);
-		foreach($saved_keys as $key){
-			if(!in_array($key, $saved_keys)){
-				
-			}
-		}*/
-		//var_dump((get_post_meta($post_id, 'script_embeder')[0]));
-		//var_dump($_POST['script_embeder']);
-		//die();
+		
 		update_post_meta($post_id, 'script_embeder', $_POST['script_embeder']);
 		
 		
