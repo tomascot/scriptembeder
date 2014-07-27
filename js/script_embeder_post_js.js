@@ -9,7 +9,7 @@ function script_embeder_add_script(){
 		'<option value="footer" >FOOTER</option>' +
 		'</select>' +
 		'<label>Order</label><input type="number" name="script_embeder[' + script_embeder_add_count + '][order]">' +
-		'<label>Content</label><input type="text" name="script_embeder[' + script_embeder_add_count + '][js]">' +
+		'<label>Content</label><textarea name="script_embeder[' + script_embeder_add_count + '][js]"></textarea>' +
 		'<input type="button" name="script_embeder_ok" onClick="script_embeder_delete_script(' + script_embeder_add_count + ')" value="Remove">' +
 		'</div>';
 		
