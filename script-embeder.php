@@ -13,6 +13,7 @@ Author URI: http://cibergeek.com
 // ACTIONS GO HERE
 add_action('add_meta_boxes', 'script_embeder_meta_box');
 add_action('save_post', 'script_embeder_save_data');
+//add_action('transition_post_status', 'script_embeder_save_data');
 add_action('admin_enqueue_scripts', 'script_embeder_post_js_script');
 //add_action('admin_print_scripts', 'script_embeder_post_js_script');
 add_action('wp_head', 'script_embeder_head');
@@ -24,13 +25,14 @@ function script_embeder_meta_box(){
 
 function script_embeder_box_generator($post){
 	$content = '';
+	wp_nonce_field('script_embeder_save', 'script_embeder_nonce');
 	if(get_post_meta($post->ID, 'script_embeder')){
 		$script_embeder_values = get_post_meta($post->ID, 'script_embeder')[0];
 		$keys = array_keys($script_embeder_values);
 		sort($keys);
 		$last_key = $keys[sizeOf($keys)-1];
 		
-		wp_nonce_field('script_embeder_save', 'script_embeder_nonce');
+		
 		
 		$content ='<script type="text/javascript">var script_embeder_add_count=' . ($last_key). ';</script>
 		<div><input type="button" name="script_embeder_ok" onClick="script_embeder_add_script()" value="Add"></div>';
@@ -64,7 +66,7 @@ function script_embeder_box_generator($post){
 		<option value="footer">FOOTER</option>
 		</select>
 		<label>Order</label><input type="number" name="script_embeder[0][order]" value="">
-		<label>Content</label><input type="text" name="script_embeder[0][js]" value="">
+		<label>Content</label><textarea name="script_embeder[0][js]" value=""></textarea>
 		<input type="button" name="script_embeder_ok" onClick="script_embeder_delete_script(0)" value="Remove">
 		</div>';
 	}
@@ -73,14 +75,16 @@ function script_embeder_box_generator($post){
 }
 
 function script_embeder_save_data($post_id){
-	if (isset($_POST['script_embeder'])){
-	
-		if(wp_verify_nonce($_POST['script_embeder_nonce'], 'script_embeder_save')){
-			update_post_meta($post_id, 'script_embeder', $_POST['script_embeder']);
-		
-		}
+	if (!isset($_POST['script_embeder'])){
+		return;
 		
 	}
+	if(!wp_verify_nonce($_POST['script_embeder_nonce'], 'script_embeder_save')){
+			
+		return;
+	}
+	
+	update_post_meta($post_id, 'script_embeder', $_POST['script_embeder']);
 	
 	
 
