@@ -11,6 +11,5 @@ Select the order.
 
 TODO (Next versions):
 Add the scripts/styles using wordpress functions for that.
-Better support for CSS. (it works now)
 Allow uploading the file from the Post Editor. (low priority)
 
