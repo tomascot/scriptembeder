@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Script Embeder
-Plugin URI: 
-Description: 
+Plugin URI: http://cibergeek.com
+Description: Javascript embeding done simple
 Author: Tomas Cot
 Version: 0.3
 Author URI: http://cibergeek.com
@@ -13,9 +13,9 @@ Author URI: http://cibergeek.com
 // ACTIONS GO HERE
 add_action('add_meta_boxes', 'script_embeder_meta_box');
 add_action('save_post', 'script_embeder_save_data');
-//add_action('transition_post_status', 'script_embeder_save_data');
+
 add_action('admin_enqueue_scripts', 'script_embeder_post_js_script');
-//add_action('admin_print_scripts', 'script_embeder_post_js_script');
+
 add_action('wp_head', 'script_embeder_head');
 add_action('wp_footer', 'script_embeder_footer');
 
@@ -27,7 +27,8 @@ function script_embeder_box_generator($post){
 	$content = '';
 	wp_nonce_field('script_embeder_save', 'script_embeder_nonce');
 	if(get_post_meta($post->ID, 'script_embeder')){
-		$script_embeder_values = get_post_meta($post->ID, 'script_embeder')[0];
+		$script_embeder_values = get_post_meta($post->ID, 'script_embeder');
+		$script_embeder_values = $script_embeder_values[0]; //for PHP < 5.4 
 		$keys = array_keys($script_embeder_values);
 		sort($keys);
 		$last_key = $keys[sizeOf($keys)-1];
@@ -84,6 +85,7 @@ function script_embeder_save_data($post_id){
 		return;
 	}
 	
+	
 	update_post_meta($post_id, 'script_embeder', $_POST['script_embeder']);
 	
 	
@@ -108,7 +110,8 @@ function script_embeder_sort_function($a, $b){
 
 function script_embeder_head(){
 	if(is_single() && get_post_meta(get_queried_object_id(), 'script_embeder')){
-		$pm = get_post_meta(get_queried_object_id(), 'script_embeder')[0];
+		$pm = get_post_meta(get_queried_object_id(), 'script_embeder');
+		$pm = $pm[0]; //for PHP < 5.4 
 		$res = usort($pm, 'script_embeder_sort_function');
 		
 		$scripts = '';
@@ -129,7 +132,8 @@ function script_embeder_head(){
 
 function script_embeder_footer(){
 	if(is_single() && get_post_meta(get_queried_object_id(), 'script_embeder')){
-		$pm = get_post_meta(get_queried_object_id(), 'script_embeder')[0];
+		$pm = get_post_meta(get_queried_object_id(), 'script_embeder');
+		$pm = $pm[0]; //for PHP < 5.4 
 		$res = usort($pm, 'script_embeder_sort_function');
 		
 		$scripts = '';
